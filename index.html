@@ -88,20 +88,49 @@ $('watchlistitems').onclick=e=>{let b=e.target.closest('[data-wa],[data-wr]');if
 function renderHoldings(){$('holdinglist').innerHTML=holdings.length?'<table><thead><tr><th>Symbol</th><th>Shares</th><th></th></tr></thead><tbody>'+holdings.map((h,i)=>'<tr><td>'+safe(h.t)+'</td><td class="private">'+safe(h.n)+'</td><td><button class="btn secondary" data-delholding="'+i+'">Remove</button></td></tr>').join('')+'</tbody></table>':'<p>No holdings entered.</p>';refreshCounts()}
 $('holdingadd').onclick=()=>{let t=$('holdingticker').value.trim().toUpperCase(),n=Number($('holdingshares').value);if(!/^[A-Z0-9.:_-]{1,30}$/.test(t)||!(n>0))return;holdings.push({t,n});save('ei_holdings',holdings);renderHoldings();$('holdingticker').value='';$('holdingshares').value=''};
 $('holdinglist').onclick=e=>{if(e.target.dataset.delholding!==undefined){holdings.splice(Number(e.target.dataset.delholding),1);save('ei_holdings',holdings);renderHoldings()}};
-function renderCompare(){$('comparechips').innerHTML=comparisons.map((x,i)=>'<span class="chip">'+safe(x)+' <button data-removecompare="'+i+'" class="btn secondary" style="padding:2px 6px">×</button></span>').join(' ');$('comparetable').innerHTML=comparisons.length?'<p class="muted">Select “Refresh comparison” for current market quotes.</p><button class="btn" id="comprefresh">Refresh comparison</button>':'Add companies to begin.';$('comprefresh')?.addEventListener('click',fetchCompare)}
-async function fetchCompare(){
- if(!comparisons.length){$('comparetable').textContent='Add companies to begin.';return}
- $('comparetable').textContent='Loading comparison…';
- const rows=await Promise.all(comparisons.map(async t=>{try{
-  const q=await fin('quote',{symbol:normalizeTicker(t)});
-  return {t,q};
- }catch(e){return {t,error:e.message}}}));
- $('comparetable').innerHTML='<table><thead><tr><th>Ticker</th><th>Price</th><th>Change</th><th>Source / status</th></tr></thead><tbody>'+
- rows.map(x=>'<tr><td>'+safe(x.t)+'</td><td>'+usd(x.q?.c)+'</td><td>'+pct(x.q?.dp)+'</td><td>'+safe(x.error||(getFinnhubKey()?'Finnhub':'Public feed'))+'</td></tr>').join('')+'</tbody></table>'+
- '<p class="small muted">Quotes may be delayed. Finnhub requests use the shared key configured in config.js, if present.</p>';
+let comparisonRequest=0;
+function renderCompare(){
+ $('comparechips').innerHTML=comparisons.map((x,i)=>'<span class="chip">'+safe(x)+' <button type="button" data-removecompare="'+i+'" class="btn secondary" style="padding:2px 6px" aria-label="Remove '+safe(x)+'">×</button></span>').join(' ');
+ $('comparetable').innerHTML=comparisons.length?'<div class="row" style="justify-content:space-between;align-items:center"><p class="muted small">Compare current available quotes for '+comparisons.length+' stock(s).</p><button type="button" class="btn secondary" id="comprefresh">↻ Refresh prices</button></div><div id="comparisonresults" role="status">Loading prices…</div>':'<p class="muted">Add a ticker such as AAPL, MSFT, or NVDA to begin comparing stocks.</p>';
+ $('comprefresh')?.addEventListener('click',fetchCompare);
+ if(comparisons.length)fetchCompare();
 }
-$('compareadd').onclick=()=>{let t=normalizeTicker($('compareq').value);if(!/^[A-Z0-9.:_-]{1,30}$/.test(t))return;if(!comparisons.includes(t))comparisons.push(t);save('ei_compare',comparisons);$('compareq').value='';renderCompare();fetchCompare()};
-$('compareclear').onclick=()=>{comparisons=[];save('ei_compare',comparisons);renderCompare()};
-$('comparechips').onclick=e=>{if(e.target.dataset.removecompare!==undefined){comparisons.splice(Number(e.target.dataset.removecompare),1);save('ei_compare',comparisons);renderCompare();if(comparisons.length)fetchCompare()}};
+async function fetchCompare(){
+ if(!comparisons.length)return;
+ const request=++comparisonRequest;
+ const panel=$('comparisonresults');
+ if(!panel)return;
+ panel.textContent='Loading '+comparisons.length+' stock quote(s)…';
+ const rows=[];
+ // Sequential requests reduce free Finnhub API throttling and preserve results when one ticker fails.
+ for(const t of comparisons){
+  if(request!==comparisonRequest)return;
+  try{
+   const q=await fin('quote',{symbol:normalizeTicker(t)});
+   if(!Number.isFinite(Number(q.c))||Number(q.c)<=0)throw Error('Price unavailable');
+   rows.push({t,q});
+  }catch(e){rows.push({t,error:e?.message||'Quote unavailable'})}
+ }
+ if(request!==comparisonRequest||!$('comparisonresults'))return;
+ const valid=rows.filter(x=>x.q);
+ $('comparisonresults').innerHTML='<table><thead><tr><th>Ticker</th><th>Price (USD)</th><th>Change ($)</th><th>Change (%)</th><th>Status</th></tr></thead><tbody>'+
+ rows.map(x=>'<tr><td><b>'+safe(x.t)+'</b></td><td>'+usd(x.q?.c)+'</td><td>'+(x.q&&Number.isFinite(Number(x.q.d))?(x.q.d>=0?'+':'')+Number(x.q.d).toFixed(2):'—')+'</td><td>'+pct(x.q?.dp)+'</td><td>'+safe(x.error||'Loaded')+'</td></tr>').join('')+'</tbody></table>'+
+ '<p class="small muted">'+valid.length+' of '+rows.length+' prices loaded · Source: '+(getFinnhubKey()?'Finnhub':'public price feed')+' · '+safe(new Date().toLocaleString())+'. Quotes may be delayed.</p>';
+}
+$('compareadd').onclick=()=>{
+ const t=normalizeTicker($('compareq').value);
+ if(!/^[A-Z0-9.:_\-]{1,30}$/.test(t)){$('comparetable').textContent='Enter a valid ticker, such as AAPL.';return}
+ if(!comparisons.includes(t))comparisons.push(t);
+ save('ei_compare',comparisons);$('compareq').value='';renderCompare();
+};
+$('compareq').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('compareadd').click()}});
+$('compareclear').onclick=()=>{++comparisonRequest;comparisons=[];save('ei_compare',comparisons);renderCompare()};
+$('comparechips').onclick=e=>{
+ const btn=e.target.closest('[data-removecompare]');
+ if(!btn)return;
+ ++comparisonRequest;
+ comparisons.splice(Number(btn.dataset.removecompare),1);
+ save('ei_compare',comparisons);renderCompare();
+};
 applyPrefs();authView();
 </script></body></html>
