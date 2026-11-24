@@ -8,6 +8,7 @@
 <section class="screen" id="analysis"><h1>Company Analysis</h1><p>Price, fundamentals, stock movement context and current company headlines.</p><div class="card"><div class="row"><input class="field" id="symbol" placeholder="Ticker, e.g. AAPL"><button class="btn" id="analyzebtn">Analyze company</button><button class="btn secondary" id="addwatch">☆ Add to watchlist</button></div><div id="analyzestatus" class="muted small" style="margin-top:12px">Enter a ticker to start. Add your Finnhub API key in Settings first.</div></div><div id="analysisresults" hidden><div class="grid"><div class="card"><div class="muted">Latest quote</div><div class="metric" id="price">—</div><div id="pricechange"></div></div><div class="card"><div class="muted">Company</div><h2 id="companyname">—</h2><div id="companyinfo" class="muted small"></div></div><div class="card"><div class="muted">Market capitalization</div><div class="metric" id="marketcap">—</div><div class="muted small">Based on provider data</div></div></div><div class="card"><h2>Why did this stock move?</h2><div id="movement" class="summary">Loading…</div><h2 style="margin-top:24px">Relevant company news</h2><div id="news">—</div></div></div></section>
 <section class="screen" id="compare"><h1>Compare Companies</h1><p>Add as many tickers as you want. Comparison uses actual available provider quotes.</p><div class="card"><div class="row"><input id="compareq" class="field" placeholder="Ticker, e.g. MSFT"><button class="btn" id="compareadd">Add company</button><button class="btn secondary" id="compareclear">Clear list</button></div><div id="comparechips" style="margin:15px 0"></div><div class="compare-chart-panel"><div class="row" style="align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><div><h2 style="margin:0">Stock price chart</h2><p class="small muted" style="margin:4px 0">Single stock: price in USD · Multiple stocks: percentage change from the first chart point</p></div><div id="compareperiods" class="compare-periods" role="group" aria-label="Chart time range"></div></div><div id="comparelegend" class="compare-legend"></div><div id="comparechart" class="compare-chart" role="img" aria-label="Historical stock price chart"><p class="muted">Add a company to see its chart.</p></div><div id="comparechartstatus" class="small muted" role="status"></div></div><div class="tablewrap" id="comparetable"></div></div></section>
 <section class="screen" id="industries"><h1>Stocks by Industry</h1><p>Discover publicly traded companies by sector and industry. These are examples for research, not personalized investment recommendations.</p><div class="card"><div class="row" style="gap:12px;align-items:end;flex-wrap:wrap"><label class="fieldlabel" style="flex:1;min-width:190px">Industry<select class="field" id="industryselect" style="display:block;width:100%;margin-top:6px"></select></label><label class="fieldlabel" style="flex:1;min-width:170px">Filter stocks<input class="field" id="industryfilter" placeholder="Company or ticker" style="display:block;width:100%;margin-top:6px"></label><label class="fieldlabel" style="min-width:155px">Performance period<select class="field" id="industryperiod" style="display:block;width:100%;margin-top:6px"><option value="1D">1 Day</option><option value="5D">5 Days</option><option value="1M">1 Month</option><option value="6M">6 Months</option><option value="YTD">Year to Date</option><option value="1Y">1 Year</option><option value="5Y">5 Years</option><option value="MAX">Max History</option></select></label><label class="fieldlabel" style="min-width:135px">Trend<select class="field" id="industrytrendfilter" style="display:block;width:100%;margin-top:6px"><option value="all">All trends</option><option value="up">▲ Up</option><option value="down">▼ Down</option><option value="flat">● Flat</option></select></label><label class="fieldlabel" style="min-width:155px">Selected-period change<select class="field" id="industrychangefilter" style="display:block;width:100%;margin-top:6px"><option value="all">Any change</option><option value="gain1">Gain ≥ 1%</option><option value="gain5">Gain ≥ 5%</option><option value="gain10">Gain ≥ 10%</option><option value="loss1">Loss ≥ 1%</option><option value="loss5">Loss ≥ 5%</option><option value="loss10">Loss ≥ 10%</option><option value="abs5">Move ≥ 5% either way</option></select></label><button class="btn secondary" id="industryrefresh">↻ Refresh prices</button></div><p id="industrydescription" class="small muted"></p><div id="industrystatus" class="small muted" role="status"></div><div id="industryfiltercount" class="small muted" aria-live="polite"></div><div class="tablewrap" id="industryresults"></div><p class="small muted">Company groupings are curated, not exhaustive. Quotes depend on the configured Finnhub key or public price feed. Selected-period returns use historical closing prices from an unofficial public data provider, may be delayed, and can differ from the current quote. No buy/sell ranking is implied.</p></div></section>
+<div class="card" style="margin-top:16px"><h2>Compare Industry Performance</h2><p class="small muted">Compare industry benchmark ETFs on one chart. Each line shows percentage price change from the start of the selected period (0% baseline). ETF benchmarks are proxies, not exact averages of the curated company lists above.</p><div class="row" style="gap:12px;align-items:end;flex-wrap:wrap"><label class="fieldlabel">Chart period<select class="field" id="industrychartperiod" style="display:block;margin-top:6px"><option value="1D">1 Day</option><option value="5D">5 Days</option><option value="1M">1 Month</option><option value="6M" selected>6 Months</option><option value="YTD">Year to Date</option><option value="1Y">1 Year</option><option value="5Y">5 Years</option><option value="MAX">Max History</option></select></label><button type="button" class="btn secondary" id="industrychartrefresh">↻ Refresh chart</button></div><p class="small muted">Choose up to 5 industry benchmarks:</p><div id="industrychartchoices" style="display:flex;gap:10px 18px;flex-wrap:wrap"></div><p class="small muted" id="industrychartstatus" role="status"></p><div id="industrychartvisual" style="width:100%;overflow-x:auto"></div><div id="industrychartlegend" style="display:flex;gap:10px 18px;flex-wrap:wrap;margin-top:10px"></div><p class="small muted">Price-only performance; dividends, fees, and taxes are not included. Benchmarks can overlap across industries. Historical prices depend on an unofficial third-party data feed.</p></div>
 <section class="screen" id="indexstocks"><h1>Index Stocks</h1><p>Explore diversified index-tracking ETFs and compare approaches to long-term investing. ETFs are funds, not individual stocks; they can lose value.</p><div class="card"><h2>Index investing overview</h2><p class="small muted">For many long-term investors, a low-cost, diversified broad-market index fund can serve as a starting point for research. The right choice depends on investment horizon, risk tolerance, existing holdings, fees, and taxes. These examples are not personalized buy recommendations.</p><div class="row" style="gap:12px;align-items:end;flex-wrap:wrap"><label class="fieldlabel" style="min-width:190px">Investment focus<select class="field" id="indexfocus" style="display:block;width:100%;margin-top:6px"><option value="all">All index funds</option><option value="core">Broad U.S. market</option><option value="growth">Large-cap / growth tilt</option><option value="international">International diversification</option><option value="bonds">Bond diversification</option></select></label><label class="fieldlabel" style="min-width:155px">Performance period<select class="field" id="indexperiod" style="display:block;width:100%;margin-top:6px"><option value="1D">1 Day</option><option value="5D">5 Days</option><option value="1M">1 Month</option><option value="6M">6 Months</option><option value="YTD">Year to Date</option><option value="1Y">1 Year</option><option value="5Y">5 Years</option><option value="MAX">Max History</option></select></label><button type="button" class="btn secondary" id="indexrefresh">↻ Refresh data</button></div><p class="small muted" id="indexstatus" role="status"></p><div class="tablewrap" id="indexresults"></div><p class="small muted">Returns are historical, not forecasts. The price feed may be delayed or unavailable. Historical price changes may exclude distributions; compare total return and expense ratios in each fund's official prospectus before investing.</p></div></section>
 <section class="screen" id="watchlist"><h1>My Watchlist</h1><p>Keep track of businesses you want to research.</p><div class="card"><div id="watchlistitems"></div></div></section>
 <section class="screen" id="portfolio"><h1>Portfolio Tracker</h1><p>Track holdings manually; EquityIQ does not connect to brokerage accounts or execute trades.</p><div class="card"><div class="row"><input id="holdingticker" class="field" placeholder="Ticker"><input id="holdingshares" type="number" min="0.000001" step="any" class="field" style="max-width:150px" placeholder="Shares"><button class="btn" id="holdingadd">Add holding</button></div><div id="holdinglist" class="tablewrap"></div></div></section>
@@ -16,7 +17,7 @@
 const $=id=>document.getElementById(id), storage=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 const tabs=[['overview','▦ Overview'],['search','⌕ Global Search'],['analysis','◫ Company Analysis'],['compare','⇄ Compare Stocks'],['industries','▤ Stocks by Industry'],['indexstocks','◈ Index Stocks'],['watchlist','☆ Watchlist'],['portfolio','▤ Portfolio'],['settings','⚙ Settings']];
 $('nav').innerHTML=tabs.map(([id,label])=>'<button class="tab" data-go="'+id+'">'+label+'</button>').join('');
-function go(id){if(!tabs.some(t=>t[0]===id))return;document.querySelectorAll('.screen').forEach(e=>e.classList.toggle('active',e.id===id));document.querySelectorAll('#nav .tab').forEach(e=>e.classList.toggle('active',e.dataset.go===id));$('currenttab').textContent=tabs.find(t=>t[0]===id)[1].replace(/^[^ ]+ /,'');if(id==='watchlist')renderWatch();if(id==='portfolio')renderHoldings();if(id==='compare')renderCompare();if(id==='industries')renderIndustry();if(id==='indexstocks')renderIndexStocks();}
+function go(id){if(!tabs.some(t=>t[0]===id))return;document.querySelectorAll('.screen').forEach(e=>e.classList.toggle('active',e.id===id));document.querySelectorAll('#nav .tab').forEach(e=>e.classList.toggle('active',e.dataset.go===id));$('currenttab').textContent=tabs.find(t=>t[0]===id)[1].replace(/^[^ ]+ /,'');if(id==='watchlist')renderWatch();if(id==='portfolio')renderHoldings();if(id==='compare')renderCompare();if(id==='industries'){renderIndustry();renderIndustryChart();}if(id==='indexstocks')renderIndexStocks();}
 document.addEventListener('click',e=>{const target=e.target.closest('[data-go]');if(target)go(target.dataset.go)});
 let authMode='login';$('register-tab').onclick=()=>{authMode='register';$('authbtn').textContent='Create local account';$('register-tab').classList.remove('secondary');$('login-tab').classList.add('secondary')};$('login-tab').onclick=()=>{authMode='login';$('authbtn').textContent='Sign in';$('login-tab').classList.remove('secondary');$('register-tab').classList.add('secondary')};
 async function hash(p,s){const v=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s+':'+p));return [...new Uint8Array(v)].map(b=>b.toString(16).padStart(2,'0')).join('')}
@@ -356,6 +357,80 @@ $('indexresults').onclick=e=>{
  if(analyze){$('symbol').value=analyze.dataset.indexAnalyze;go('analysis');$('analyzebtn').click()}
  if(compare){const ticker=compare.dataset.indexCompare;if(!comparisons.includes(ticker)){comparisons.push(ticker);save('ei_compare',comparisons)}go('compare')}
 };
+
+
+const industryBenchmarks=[
+ ['Software','IGV'],['Semiconductors','SOXX'],['Technology','XLK'],['Communication','XLC'],
+ ['Consumer discretionary','XLY'],['Consumer staples','XLP'],['Financials','XLF'],
+ ['Healthcare','XLV'],['Energy','XLE'],['Industrials','XLI'],['Utilities','XLU'],['Real estate','XLRE']
+];
+const industryChartColors=['#6d9cff','#ffad5a','#41d9b1','#d590ff','#ff6685'];
+let industryChartRequest=0;
+const industryChartSelected=new Set(['IGV','SOXX','XLF','XLV']);
+$('industrychartchoices').innerHTML=industryBenchmarks.map(([name,ticker])=>'<label style="display:inline-flex;align-items:center;gap:6px;font-size:13px"><input type="checkbox" data-industry-benchmark="'+ticker+'" '+(industryChartSelected.has(ticker)?'checked':'')+'>'+safe(name)+' <span class="muted">('+ticker+')</span></label>').join('');
+$('industrychartchoices').onchange=e=>{
+ const input=e.target.closest('[data-industry-benchmark]');if(!input)return;
+ const ticker=input.dataset.industryBenchmark;
+ if(input.checked&&industryChartSelected.size>=5){input.checked=false;$('industrychartstatus').textContent='Select up to 5 benchmarks.';return}
+ if(input.checked)industryChartSelected.add(ticker);else industryChartSelected.delete(ticker);
+ renderIndustryChart();
+};
+$('industrychartperiod').onchange=renderIndustryChart;
+$('industrychartrefresh').onclick=renderIndustryChart;
+async function renderIndustryChart(){
+ const request=++industryChartRequest,period=$('industrychartperiod').value;
+ const selected=industryBenchmarks.filter(([,ticker])=>industryChartSelected.has(ticker));
+ const visual=$('industrychartvisual'),legend=$('industrychartlegend'),status=$('industrychartstatus');
+ if(!selected.length){visual.innerHTML='';legend.innerHTML='';status.textContent='Choose at least one industry benchmark.';return}
+ status.textContent='Loading '+selected.length+' industry benchmarks for '+period+'…';
+ visual.innerHTML='';legend.innerHTML='';
+ const series=await Promise.all(selected.map(async ([name,ticker],index)=>{
+  try{const points=await getHistory(ticker,period);return {name,ticker,index,points,base:points[0].p}}
+  catch{return null}
+ }));
+ if(request!==industryChartRequest)return;
+ const valid=series.filter(Boolean);
+ if(!valid.length){status.textContent='Historical chart unavailable. Try another period or refresh later.';return}
+ const start=Math.max(...valid.map(s=>s.points[0].t));
+ const end=Math.min(...valid.map(s=>s.points[s.points.length-1].t));
+ if(end<=start){status.textContent='No overlapping history available for these benchmarks.';return}
+ const usable=valid.map(s=>{
+  const points=s.points.filter(p=>p.t>=start&&p.t<=end);
+  if(points.length<2)return null;
+  const base=points[0].p;
+  return {...s,points:points.map(p=>({t:p.t,v:(p.p/base-1)*100}))};
+ }).filter(Boolean);
+ if(!usable.length){status.textContent='Not enough overlapping price history.';return}
+ const values=usable.flatMap(s=>s.points.map(p=>p.v));
+ let min=Math.min(0,...values),max=Math.max(0,...values);
+ const pad=Math.max((max-min)*0.12,0.4);min-=pad;max+=pad;
+ const W=900,H=350,left=65,right=22,top=20,bottom=42;
+ const x=t=>left+(t-start)/(end-start)*(W-left-right);
+ const y=v=>top+(max-v)/(max-min)*(H-top-bottom);
+ const escapeXml=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+ let svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Industry ETF percentage price performance chart" style="width:100%;min-width:520px;height:auto;display:block">';
+ for(let i=0;i<=4;i++){
+  const v=min+(max-min)*i/4,yy=y(v);
+  svg+='<line x1="'+left+'" y1="'+yy+'" x2="'+(W-right)+'" y2="'+yy+'" stroke="#526078" stroke-opacity=".35" stroke-dasharray="3 4"/><text x="'+(left-9)+'" y="'+(yy+4)+'" text-anchor="end" font-size="12" fill="#a0aec6">'+v.toFixed(1)+'%</text>';
+ }
+ for(let i=0;i<=4;i++){
+  const t=start+(end-start)*i/4;
+  svg+='<text x="'+x(t)+'" y="'+(H-13)+'" text-anchor="middle" font-size="12" fill="#a0aec6">'+escapeXml(new Date(t).toLocaleDateString(undefined,{month:'short',day:'numeric',year:period==='5Y'||period==='MAX'?'2-digit':undefined}))+'</text>';
+ }
+ svg+='<line x1="'+left+'" y1="'+y(0)+'" x2="'+(W-right)+'" y2="'+y(0)+'" stroke="#d1d9e9" stroke-opacity=".65"/>';
+ for(const s of usable){
+  const color=industryChartColors[s.index];
+  const path=s.points.map((p,i)=>(i?'L':'M')+x(p.t).toFixed(1)+' '+y(p.v).toFixed(1)).join(' ');
+  svg+='<path d="'+path+'" fill="none" stroke="'+color+'" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"><title>'+escapeXml(s.name+' ('+s.ticker+')')+'</title></path>';
+ }
+ svg+='</svg>';
+ visual.innerHTML=svg;
+ legend.innerHTML=usable.map(s=>{
+  const last=s.points[s.points.length-1].v,color=industryChartColors[s.index];
+  return '<span style="font-size:13px"><span style="color:'+color+'">●</span> '+safe(s.name)+' ('+safe(s.ticker)+') <b class="'+(last>0?'good':last<0?'bad':'muted')+'">'+(last>0?'+':'')+last.toFixed(2)+'%</b></span>';
+ }).join('');
+ status.textContent='Comparing '+usable.length+' of '+selected.length+' benchmarks · '+period+' · '+new Date().toLocaleTimeString()+(usable.length<selected.length?' · Some symbols unavailable':'');
+}
 
 applyPrefs();authView();
 </script></body></html>
