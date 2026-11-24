@@ -1,45 +1,72 @@
 name: Deploy EquityIQ to GitHub Pages
+
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
+  actions: read
 
 concurrency:
   group: github-pages
   cancel-in-progress: true
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare website
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          cp index.html _site/index.html
+          touch _site/.nojekyll
+          test -s _site/index.html
+          echo "Website files:"
+          ls -lah _site
+
+      - name: Package GitHub Pages artifact
+        run: |
+          set -euo pipefail
+          tar --dereference --hard-dereference -cvf "$RUNNER_TEMP/artifact.tar" -C _site .
+          test -s "$RUNNER_TEMP/artifact.tar"
+          ls -lh "$RUNNER_TEMP/artifact.tar"
+
+      - name: Upload artifact as github-pages
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-pages
+          path: ${{ runner.temp }}/artifact.tar
+          retention-days: 1
+          compression-level: 0
+          if-no-files-found: error
+
+      - name: Confirm artifact uploaded
+        env:
+          ARTIFACT_ID: ${{ steps.upload.outputs.artifact-id }}
+        run: |
+          if [ -z "$ARTIFACT_ID" ]; then
+            echo "::error::The github-pages artifact was not uploaded. Check the Upload artifact step."
+            exit 1
+          fi
+          echo "GitHub Pages artifact uploaded successfully: $ARTIFACT_ID"
+
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-
-      - name: Prepare site
-        run: |
-          mkdir -p _site
-          cp index.html _site/index.html
-          test -s _site/index.html
-          touch _site/.nojekyll
-
-      - name: Upload GitHub Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-
-      - name: Deploy to GitHub Pages
+      - name: Deploy GitHub Pages artifact
         id: deployment
         uses: actions/deploy-pages@v4
         with:
