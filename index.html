@@ -217,7 +217,7 @@ function renderIndustry(){
  const stocks=group.stocks.filter(([ticker,company])=>ticker.toLowerCase().includes(filter)||company.toLowerCase().includes(filter));
  ++industryRequest;
  $('industrystatus').textContent=stocks.length+' companies · Select “Refresh prices” to retrieve quotes.';
- $('industryresults').innerHTML=stocks.length?'<table><thead><tr><th>Company</th><th>Ticker</th><th>Price (USD)</th><th>Change (%)</th><th>Actions</th></tr></thead><tbody>'+stocks.map(([ticker,company])=>'<tr><td>'+safe(company)+'</td><td><b>'+safe(ticker)+'</b></td><td data-price="'+safe(ticker)+'">—</td><td data-change="'+safe(ticker)+'">—</td><td><button type="button" class="btn secondary small" data-industry-analyze="'+safe(ticker)+'">Analyze</button> <button type="button" class="btn secondary small" data-industry-compare="'+safe(ticker)+'">Compare +</button></td></tr>').join('')+'</tbody></table>':'No companies match your filter.';
+ $('industryresults').innerHTML=stocks.length?'<table><thead><tr><th>Company</th><th>Ticker</th><th>Price (USD)</th><th>Change (%)</th><th>Trend</th><th>Actions</th></tr></thead><tbody>'+stocks.map(([ticker,company])=>'<tr><td>'+safe(company)+'</td><td><b>'+safe(ticker)+'</b></td><td data-price="'+safe(ticker)+'">—</td><td data-change="'+safe(ticker)+'">—</td><td data-trend="'+safe(ticker)+'">—</td><td><button type="button" class="btn secondary small" data-industry-analyze="'+safe(ticker)+'">Analyze</button> <button type="button" class="btn secondary small" data-industry-compare="'+safe(ticker)+'">Compare +</button></td></tr>').join('')+'</tbody></table>':'No companies match your filter.';
 }
 $('industryselect').onchange=renderIndustry;
 $('industryfilter').oninput=renderIndustry;
@@ -233,7 +233,15 @@ $('industryrefresh').onclick=async()=>{
    if(request!==industryRequest)return;
    const price=$('industryresults').querySelector('[data-price="'+ticker+'"]'),change=$('industryresults').querySelector('[data-change="'+ticker+'"]');
    if(price)price.textContent=usd(q.c);
-   if(change)change.textContent=pct(q.dp);
+   const trend=$('industryresults').querySelector('[data-trend="'+ticker+'"]');
+   const delta=Number(q.dp);
+   if(Number.isFinite(delta)){
+    if(change){change.textContent=(delta>0?'+':'')+delta.toFixed(2)+'%';change.className=delta>0?'good':delta<0?'bad':'muted'}
+    if(trend){trend.textContent=delta>0?'▲ Up':delta<0?'▼ Down':'● Flat';trend.className=delta>0?'good':delta<0?'bad':'muted'}
+   }else{
+    if(change)change.textContent='—';
+    if(trend){trend.textContent='Unknown';trend.className='muted'}
+   }
    loaded++;
   }catch(e){const price=$('industryresults').querySelector('[data-price="'+ticker+'"]');if(price)price.textContent='Unavailable';}
  }
