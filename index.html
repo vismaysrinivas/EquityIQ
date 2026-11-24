@@ -84,6 +84,11 @@ tr:hover td{background:color-mix(in srgb,#5275c2 7%,var(--panel))}
 /* Brighter, distinguishable chart series on the navy visualization panels */
 .compare-chart .series,#industrychartvisual svg .series,#indexchartvisual svg .series{stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 2px #0006)}
 #comparelegend i,#industrychartlegend i,#indexchartlegend i{box-shadow:0 0 0 1px #ffffff55}
+
+/* High-contrast chart lines: vivid colors remain distinct on the navy chart backgrounds */
+.compare-chart .series,#industrychartvisual svg .series,#indexchartvisual svg .series{stroke-width:3!important;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 2px #07172b77)}
+#analysischart svg path[stroke]{stroke-width:3!important;stroke-linejoin:round;stroke-linecap:round}
+#comparelegend i,#industrychartlegend i,#indexchartlegend i{border:1px solid #ffffff88;box-shadow:0 0 0 2px #152b4a44}
 </style></head><body>
 <div class="auth" id="auth"><div class="authbox"><div class="brand">↗ Equity<span>IQ</span></div><p>Welcome to your research workspace</p><div class="authrow"><button class="btn" id="login-tab">Sign in</button><button class="btn secondary" id="register-tab">Create account</button></div><form id="authform"><label class="fieldlabel">Username</label><input class="field" id="username" autocomplete="username" minlength="3" required><label class="fieldlabel">Password</label><input class="field" id="password" type="password" autocomplete="current-password" minlength="8" required><button class="btn" type="submit" id="authbtn">Sign in</button></form><p id="authmsg" class="error small"></p><div class="tip small">Local-only prototype accounts are stored in this browser. Do not use a real password, brokerage credentials, or confidential financial information.</div></div></div>
 <div id="application" class="app" hidden><aside class="sidebar"><div class="brand">↗ Equity<span>IQ</span></div><div class="caption">GLOBAL STOCK INTELLIGENCE</div><nav id="nav"></nav><p class="small muted">Research only · Not a brokerage</p></aside><main><div class="top"><span class="muted">Research workspace / <b id="currenttab">Overview</b></span><button class="btn secondary" id="signout">Sign out</button></div>
@@ -256,7 +261,7 @@ $('holdinglist').onclick=e=>{if(e.target.dataset.delholding!==undefined){holding
 // This endpoint can fail or throttle; never invent prices or replace missing points with fake data.
 const compareRanges={ '1D':['1d','5m'],'5D':['5d','30m'],'1M':['1mo','1d'],'6M':['6mo','1d'],'YTD':['ytd','1d'],'1Y':['1y','1wk'],'5Y':['5y','1mo'],'MAX':['max','3mo'] };
 let compareRange='1M',chartRequest=0;
-const chartColors=['#58a6ff','#ffb454','#42d6c4','#c58cff','#ff7896','#a3e635','#4dd5f5','#ffd166','#b7a0ff','#ff9d66','#78e0a3','#e3a6ff'];
+const chartColors=['#38BDF8','#FBBF24','#A78BFA','#34D399','#FB7185','#F97316','#22D3EE','#E879F9','#A3E635','#60A5FA','#F472B6','#FDE047'];
 function initComparePeriods(){
  $('compareperiods').innerHTML=Object.keys(compareRanges).map(r=>'<button type="button" data-period="'+r+'" class="'+(r===compareRange?'active':'')+'">'+r+'</button>').join('');
 }
@@ -569,7 +574,7 @@ const industryBenchmarks=[
  ['Consumer discretionary','XLY'],['Consumer staples','XLP'],['Financials','XLF'],
  ['Healthcare','XLV'],['Energy','XLE'],['Industrials','XLI'],['Utilities','XLU'],['Real estate','XLRE']
 ];
-const industryChartColors=['#58a6ff','#ffb454','#42d6c4','#c58cff','#ff7896','#a3e635','#4dd5f5','#ffd166','#b7a0ff','#ff9d66','#78e0a3','#e3a6ff'];
+const industryChartColors=['#38BDF8','#FBBF24','#A78BFA','#34D399','#FB7185','#F97316','#22D3EE','#E879F9','#A3E635','#60A5FA','#F472B6','#FDE047'];
 let industryChartRequest=0;
 const industryChartSelected=new Set(industryBenchmarks.map(([,ticker])=>ticker));
 $('industrychartchoices').innerHTML=industryBenchmarks.map(([name,ticker])=>'<label style="display:inline-flex;align-items:center;gap:6px;font-size:13px"><input type="checkbox" data-industry-benchmark="'+ticker+'" '+(industryChartSelected.has(ticker)?'checked':'')+'>'+safe(name)+' <span class="muted">('+ticker+')</span></label>').join('');
@@ -661,7 +666,7 @@ async function renderIndustryChart(){
 }
 
 const indexBenchmarks=indexFundCatalog.map(f=>[f.name,f.ticker]);
-const indexChartColors=['#58a6ff','#ffb454','#42d6c4','#c58cff','#ff7896','#a3e635','#4dd5f5','#ffd166','#b7a0ff','#ff9d66','#78e0a3','#e3a6ff'];
+const indexChartColors=['#38BDF8','#FBBF24','#A78BFA','#34D399','#FB7185','#F97316','#22D3EE','#E879F9','#A3E635','#60A5FA','#F472B6','#FDE047'];
 let indexChartRequest=0;
 const indexChartSelected=new Set(indexBenchmarks.map(([,ticker])=>ticker));
 $('indexchartchoices').innerHTML=indexBenchmarks.map(([name,ticker])=>'<label style="display:inline-flex;align-items:center;gap:6px;font-size:13px"><input type="checkbox" data-index-benchmark="'+ticker+'" '+(indexChartSelected.has(ticker)?'checked':'')+'>'+safe(name)+' <span class="muted">('+ticker+')</span></label>').join('');
@@ -795,7 +800,7 @@ async function renderAnalysisChart(ticker){
   const y=p=>T+(hi-p)/(hi-lo)*(H-T-B);
   const path=points.map((p,i)=>(i?'L':'M')+x(p.t).toFixed(2)+' '+y(p.p).toFixed(2)).join(' ');
   const area=path+' L'+x(points[points.length-1].t).toFixed(2)+' '+(H-B)+' L'+L+' '+(H-B)+' Z';
-  const colorHex=positive?'#6ce3cf':'#ff9bac';
+  const colorHex=positive?'#34D399':'#FB7185';
   let svg='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;min-width:520px;height:auto;display:block" role="img" aria-label="'+safe(ticker)+' '+safe(period)+' historical stock price chart"><defs><linearGradient id="analysisFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="'+colorHex+'" stop-opacity=".19"/><stop offset="100%" stop-color="'+colorHex+'" stop-opacity="0"/></linearGradient></defs>';
   for(let i=0;i<=4;i++){
    const price=lo+(hi-lo)*i/4,yy=y(price);
