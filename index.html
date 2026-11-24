@@ -61,6 +61,25 @@ tr:hover td{background:color-mix(in srgb,#5275c2 7%,var(--panel))}
 :root[data-mode=light] .movement-evidence a{color:#bce8ff!important}
 :root[data-mode=light] .movement-evidence .muted{color:#dce8fa!important}
 @media(max-width:740px){.sidebar{border-right:0;border-bottom:1px solid #718cbd55}}
+
+/* Shared blue visualization design across Company, Compare, Industry and Index charts */
+:root{--viz-bg:#11284c;--viz-bg-end:#263b73;--viz-border:#607fb7;--viz-grid:#6077a466;--viz-label:#d5e5ff;--viz-positive:#6ce3cf;--viz-negative:#ff9bac}
+.compare-chart-panel,.compare-chart,#analysischart,#industrychartvisual,#indexchartvisual{background:linear-gradient(125deg,var(--viz-bg),var(--viz-bg-end))!important;border:1px solid var(--viz-border)!important;border-radius:15px;color:#f3f8ff!important}
+.compare-chart-panel{padding:18px!important}
+.compare-chart-panel .compare-chart{border:0!important;background:transparent!important}
+#analysischart,#industrychartvisual,#indexchartvisual{padding:14px;overflow:auto}
+.compare-chart .axis,#industrychartvisual svg text,#indexchartvisual svg text,#analysischart svg text{fill:var(--viz-label)!important}
+.compare-chart .gridline,#industrychartvisual svg .gridline,#indexchartvisual svg .gridline{stroke:var(--viz-grid)!important}
+#industrychartvisual svg line,#indexchartvisual svg line,#analysischart svg line{stroke:var(--viz-grid)!important}
+#industrychartvisual svg,#indexchartvisual svg,#analysischart svg{max-width:100%}
+.compare-tooltip{background:#142a50!important;color:#fff!important;border:1px solid #88a9e6!important;box-shadow:0 8px 25px #0006}
+#comparelegend,#industrychartlegend,#indexchartlegend{color:var(--text)}
+#industrycharttable,#indexcharttable,#macrotable{border-radius:12px;overflow:auto;border:1px solid color-mix(in srgb,#6385c9 48%,var(--line))}
+#industrycharttable th,#indexcharttable th{background:color-mix(in srgb,#34599e 26%,var(--panel));color:var(--text)}
+#industrycharttable td,#indexcharttable td{background:color-mix(in srgb,#34599e 6%,var(--panel))}
+.compare-periods button.active{background:#365bb7!important;border-color:#87a9ed!important;color:#fff!important}
+:root[data-mode=light]{--viz-bg:#142a50;--viz-bg-end:#263b73;--viz-border:#6886bf;--viz-label:#e2edff}
+@media(max-width:650px){.compare-chart-panel{padding:10px!important}#analysischart,#industrychartvisual,#indexchartvisual{padding:8px}}
 </style></head><body>
 <div class="auth" id="auth"><div class="authbox"><div class="brand">↗ Equity<span>IQ</span></div><p>Welcome to your research workspace</p><div class="authrow"><button class="btn" id="login-tab">Sign in</button><button class="btn secondary" id="register-tab">Create account</button></div><form id="authform"><label class="fieldlabel">Username</label><input class="field" id="username" autocomplete="username" minlength="3" required><label class="fieldlabel">Password</label><input class="field" id="password" type="password" autocomplete="current-password" minlength="8" required><button class="btn" type="submit" id="authbtn">Sign in</button></form><p id="authmsg" class="error small"></p><div class="tip small">Local-only prototype accounts are stored in this browser. Do not use a real password, brokerage credentials, or confidential financial information.</div></div></div>
 <div id="application" class="app" hidden><aside class="sidebar"><div class="brand">↗ Equity<span>IQ</span></div><div class="caption">GLOBAL STOCK INTELLIGENCE</div><nav id="nav"></nav><p class="small muted">Research only · Not a brokerage</p></aside><main><div class="top"><span class="muted">Research workspace / <b id="currenttab">Overview</b></span><button class="btn secondary" id="signout">Sign out</button></div>
@@ -233,7 +252,7 @@ $('holdinglist').onclick=e=>{if(e.target.dataset.delholding!==undefined){holding
 // This endpoint can fail or throttle; never invent prices or replace missing points with fake data.
 const compareRanges={ '1D':['1d','5m'],'5D':['5d','30m'],'1M':['1mo','1d'],'6M':['6mo','1d'],'YTD':['ytd','1d'],'1Y':['1y','1wk'],'5Y':['5y','1mo'],'MAX':['max','3mo'] };
 let compareRange='1M',chartRequest=0;
-const chartColors=['#66a3ff','#48d8ac','#f4b65c','#d08cff','#ff748b','#72d5e8','#f2df7a','#a0b7ff'];
+const chartColors=['#77a8ff','#9bcbff','#a1f5d9','#5a89e8','#c4d5ff','#58c6dc','#b2a6ff','#6ce3cf','#5275c2','#86b9e9','#8be2e9','#d3e1ff'];
 function initComparePeriods(){
  $('compareperiods').innerHTML=Object.keys(compareRanges).map(r=>'<button type="button" data-period="'+r+'" class="'+(r===compareRange?'active':'')+'">'+r+'</button>').join('');
 }
@@ -546,7 +565,7 @@ const industryBenchmarks=[
  ['Consumer discretionary','XLY'],['Consumer staples','XLP'],['Financials','XLF'],
  ['Healthcare','XLV'],['Energy','XLE'],['Industrials','XLI'],['Utilities','XLU'],['Real estate','XLRE']
 ];
-const industryChartColors=['#6d9cff','#ffad5a','#41d9b1','#d590ff','#ff6685','#ffd166','#64c7ff','#f58ed5','#98e17d','#f4a261','#a6a1ff','#e5c07b'];
+const industryChartColors=['#77a8ff','#9bcbff','#a1f5d9','#5a89e8','#c4d5ff','#58c6dc','#b2a6ff','#6ce3cf','#5275c2','#86b9e9','#8be2e9','#d3e1ff'];
 let industryChartRequest=0;
 const industryChartSelected=new Set(industryBenchmarks.map(([,ticker])=>ticker));
 $('industrychartchoices').innerHTML=industryBenchmarks.map(([name,ticker])=>'<label style="display:inline-flex;align-items:center;gap:6px;font-size:13px"><input type="checkbox" data-industry-benchmark="'+ticker+'" '+(industryChartSelected.has(ticker)?'checked':'')+'>'+safe(name)+' <span class="muted">('+ticker+')</span></label>').join('');
@@ -638,7 +657,7 @@ async function renderIndustryChart(){
 }
 
 const indexBenchmarks=indexFundCatalog.map(f=>[f.name,f.ticker]);
-const indexChartColors=['#6d9cff','#ffad5a','#41d9b1','#d590ff','#ff6685','#ffd166','#64c7ff','#f58ed5','#98e17d','#f4a261','#a6a1ff','#e5c07b'];
+const indexChartColors=['#77a8ff','#9bcbff','#a1f5d9','#5a89e8','#c4d5ff','#58c6dc','#b2a6ff','#6ce3cf','#5275c2','#86b9e9','#8be2e9','#d3e1ff'];
 let indexChartRequest=0;
 const indexChartSelected=new Set(indexBenchmarks.map(([,ticker])=>ticker));
 $('indexchartchoices').innerHTML=indexBenchmarks.map(([name,ticker])=>'<label style="display:inline-flex;align-items:center;gap:6px;font-size:13px"><input type="checkbox" data-index-benchmark="'+ticker+'" '+(indexChartSelected.has(ticker)?'checked':'')+'>'+safe(name)+' <span class="muted">('+ticker+')</span></label>').join('');
@@ -772,7 +791,7 @@ async function renderAnalysisChart(ticker){
   const y=p=>T+(hi-p)/(hi-lo)*(H-T-B);
   const path=points.map((p,i)=>(i?'L':'M')+x(p.t).toFixed(2)+' '+y(p.p).toFixed(2)).join(' ');
   const area=path+' L'+x(points[points.length-1].t).toFixed(2)+' '+(H-B)+' L'+L+' '+(H-B)+' Z';
-  const colorHex=positive?'#2ea76a':'#e45c70';
+  const colorHex=positive?'#6ce3cf':'#ff9bac';
   let svg='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;min-width:520px;height:auto;display:block" role="img" aria-label="'+safe(ticker)+' '+safe(period)+' historical stock price chart"><defs><linearGradient id="analysisFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="'+colorHex+'" stop-opacity=".19"/><stop offset="100%" stop-color="'+colorHex+'" stop-opacity="0"/></linearGradient></defs>';
   for(let i=0;i<=4;i++){
    const price=lo+(hi-lo)*i/4,yy=y(price);
