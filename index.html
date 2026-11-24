@@ -30,7 +30,7 @@ $('savebackend').onclick=()=>{const raw=$('backendurl').value.trim();try{const u
 $('forgetbackend').onclick=()=>{localStorage.removeItem('ei_backend');$('backendurl').value='';$('backendstatus').textContent='Backend URL cleared.'};
 function safe(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 // No-account public market data. Yahoo chart is unofficial and reached via a third-party CORS proxy.
-const publicNames={AAPL:'Apple',MSFT:'Microsoft',NVDA:'NVIDIA',GOOGL:'Alphabet',GOOG:'Alphabet',AMZN:'Amazon',META:'Meta Platforms',TSLA:'Tesla',CRM:'Salesforce',NFLX:'Netflix',AMD:'Advanced Micro Devices',INTC:'Intel',ORCL:'Oracle',ADBE:'Adobe',JPM:'JPMorgan Chase',BAC:'Bank of America',WMT:'Walmart',COST:'Costco',DIS:'Walt Disney',UBER:'Uber',PLTR:'Palantir',AVGO:'Broadcom',BRK.B:'Berkshire Hathaway',V:'Visa',MA:'Mastercard',KO:'Coca-Cola',PEP:'PepsiCo',IBM:'IBM',PYPL:'PayPal',SHOP:'Shopify',SPY:'SPDR S&P 500 ETF',QQQ:'Invesco QQQ ETF'};
+const publicNames={AAPL:'Apple',MSFT:'Microsoft',NVDA:'NVIDIA',GOOGL:'Alphabet',GOOG:'Alphabet',AMZN:'Amazon',META:'Meta Platforms',TSLA:'Tesla',CRM:'Salesforce',NFLX:'Netflix',AMD:'Advanced Micro Devices',INTC:'Intel',ORCL:'Oracle',ADBE:'Adobe',JPM:'JPMorgan Chase',BAC:'Bank of America',WMT:'Walmart',COST:'Costco',DIS:'Walt Disney',UBER:'Uber',PLTR:'Palantir',AVGO:'Broadcom','BRK.B':'Berkshire Hathaway',V:'Visa',MA:'Mastercard',KO:'Coca-Cola',PEP:'PepsiCo',IBM:'IBM',PYPL:'PayPal',SHOP:'Shopify',SPY:'SPDR S&P 500 ETF',QQQ:'Invesco QQQ ETF'};
 async function fin(route,params={}){
  const sym=String(params.symbol||'').trim().toUpperCase();
  if(route==='search'){
