@@ -216,11 +216,13 @@ function renderIndustry(){
  const filter=$('industryfilter').value.trim().toLowerCase();
  const stocks=group.stocks.filter(([ticker,company])=>ticker.toLowerCase().includes(filter)||company.toLowerCase().includes(filter));
  ++industryRequest;
- $('industrystatus').textContent=stocks.length+' companies · Select “Refresh prices” to retrieve quotes.';
+ $('industrystatus').textContent=stocks.length+' companies · Loading prices automatically…';
  $('industryresults').innerHTML=stocks.length?'<table><thead><tr><th>Company</th><th>Ticker</th><th>Price (USD)</th><th>Change (%)</th><th>Trend</th><th>Actions</th></tr></thead><tbody>'+stocks.map(([ticker,company])=>'<tr><td>'+safe(company)+'</td><td><b>'+safe(ticker)+'</b></td><td data-price="'+safe(ticker)+'">—</td><td data-change="'+safe(ticker)+'">—</td><td data-trend="'+safe(ticker)+'">—</td><td><button type="button" class="btn secondary small" data-industry-analyze="'+safe(ticker)+'">Analyze</button> <button type="button" class="btn secondary small" data-industry-compare="'+safe(ticker)+'">Compare +</button></td></tr>').join('')+'</tbody></table>':'No companies match your filter.';
+ if(stocks.length)$('industryrefresh').click();
 }
 $('industryselect').onchange=renderIndustry;
-$('industryfilter').oninput=renderIndustry;
+let industryFilterTimer;
+$('industryfilter').oninput=()=>{clearTimeout(industryFilterTimer);industryFilterTimer=setTimeout(renderIndustry,350)};
 $('industryrefresh').onclick=async()=>{
  const request=++industryRequest,group=industryCatalog[$('industryselect').value],filter=$('industryfilter').value.trim().toLowerCase();
  const stocks=group.stocks.filter(([ticker,company])=>ticker.toLowerCase().includes(filter)||company.toLowerCase().includes(filter));
