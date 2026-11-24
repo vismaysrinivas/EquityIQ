@@ -80,6 +80,10 @@ tr:hover td{background:color-mix(in srgb,#5275c2 7%,var(--panel))}
 .compare-periods button.active{background:#365bb7!important;border-color:#87a9ed!important;color:#fff!important}
 :root[data-mode=light]{--viz-bg:#142a50;--viz-bg-end:#263b73;--viz-border:#6886bf;--viz-label:#e2edff}
 @media(max-width:650px){.compare-chart-panel{padding:10px!important}#analysischart,#industrychartvisual,#indexchartvisual{padding:8px}}
+
+/* Brighter, distinguishable chart series on the navy visualization panels */
+.compare-chart .series,#industrychartvisual svg .series,#indexchartvisual svg .series{stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 2px #0006)}
+#comparelegend i,#industrychartlegend i,#indexchartlegend i{box-shadow:0 0 0 1px #ffffff55}
 </style></head><body>
 <div class="auth" id="auth"><div class="authbox"><div class="brand">↗ Equity<span>IQ</span></div><p>Welcome to your research workspace</p><div class="authrow"><button class="btn" id="login-tab">Sign in</button><button class="btn secondary" id="register-tab">Create account</button></div><form id="authform"><label class="fieldlabel">Username</label><input class="field" id="username" autocomplete="username" minlength="3" required><label class="fieldlabel">Password</label><input class="field" id="password" type="password" autocomplete="current-password" minlength="8" required><button class="btn" type="submit" id="authbtn">Sign in</button></form><p id="authmsg" class="error small"></p><div class="tip small">Local-only prototype accounts are stored in this browser. Do not use a real password, brokerage credentials, or confidential financial information.</div></div></div>
 <div id="application" class="app" hidden><aside class="sidebar"><div class="brand">↗ Equity<span>IQ</span></div><div class="caption">GLOBAL STOCK INTELLIGENCE</div><nav id="nav"></nav><p class="small muted">Research only · Not a brokerage</p></aside><main><div class="top"><span class="muted">Research workspace / <b id="currenttab">Overview</b></span><button class="btn secondary" id="signout">Sign out</button></div>
@@ -252,7 +256,7 @@ $('holdinglist').onclick=e=>{if(e.target.dataset.delholding!==undefined){holding
 // This endpoint can fail or throttle; never invent prices or replace missing points with fake data.
 const compareRanges={ '1D':['1d','5m'],'5D':['5d','30m'],'1M':['1mo','1d'],'6M':['6mo','1d'],'YTD':['ytd','1d'],'1Y':['1y','1wk'],'5Y':['5y','1mo'],'MAX':['max','3mo'] };
 let compareRange='1M',chartRequest=0;
-const chartColors=['#77a8ff','#9bcbff','#a1f5d9','#5a89e8','#c4d5ff','#58c6dc','#b2a6ff','#6ce3cf','#5275c2','#86b9e9','#8be2e9','#d3e1ff'];
+const chartColors=['#58a6ff','#ffb454','#42d6c4','#c58cff','#ff7896','#a3e635','#4dd5f5','#ffd166','#b7a0ff','#ff9d66','#78e0a3','#e3a6ff'];
 function initComparePeriods(){
  $('compareperiods').innerHTML=Object.keys(compareRanges).map(r=>'<button type="button" data-period="'+r+'" class="'+(r===compareRange?'active':'')+'">'+r+'</button>').join('');
 }
@@ -565,7 +569,7 @@ const industryBenchmarks=[
  ['Consumer discretionary','XLY'],['Consumer staples','XLP'],['Financials','XLF'],
  ['Healthcare','XLV'],['Energy','XLE'],['Industrials','XLI'],['Utilities','XLU'],['Real estate','XLRE']
 ];
-const industryChartColors=['#77a8ff','#9bcbff','#a1f5d9','#5a89e8','#c4d5ff','#58c6dc','#b2a6ff','#6ce3cf','#5275c2','#86b9e9','#8be2e9','#d3e1ff'];
+const industryChartColors=['#58a6ff','#ffb454','#42d6c4','#c58cff','#ff7896','#a3e635','#4dd5f5','#ffd166','#b7a0ff','#ff9d66','#78e0a3','#e3a6ff'];
 let industryChartRequest=0;
 const industryChartSelected=new Set(industryBenchmarks.map(([,ticker])=>ticker));
 $('industrychartchoices').innerHTML=industryBenchmarks.map(([name,ticker])=>'<label style="display:inline-flex;align-items:center;gap:6px;font-size:13px"><input type="checkbox" data-industry-benchmark="'+ticker+'" '+(industryChartSelected.has(ticker)?'checked':'')+'>'+safe(name)+' <span class="muted">('+ticker+')</span></label>').join('');
@@ -657,7 +661,7 @@ async function renderIndustryChart(){
 }
 
 const indexBenchmarks=indexFundCatalog.map(f=>[f.name,f.ticker]);
-const indexChartColors=['#77a8ff','#9bcbff','#a1f5d9','#5a89e8','#c4d5ff','#58c6dc','#b2a6ff','#6ce3cf','#5275c2','#86b9e9','#8be2e9','#d3e1ff'];
+const indexChartColors=['#58a6ff','#ffb454','#42d6c4','#c58cff','#ff7896','#a3e635','#4dd5f5','#ffd166','#b7a0ff','#ff9d66','#78e0a3','#e3a6ff'];
 let indexChartRequest=0;
 const indexChartSelected=new Set(indexBenchmarks.map(([,ticker])=>ticker));
 $('indexchartchoices').innerHTML=indexBenchmarks.map(([name,ticker])=>'<label style="display:inline-flex;align-items:center;gap:6px;font-size:13px"><input type="checkbox" data-index-benchmark="'+ticker+'" '+(indexChartSelected.has(ticker)?'checked':'')+'>'+safe(name)+' <span class="muted">('+ticker+')</span></label>').join('');
