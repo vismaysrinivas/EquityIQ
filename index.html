@@ -24,6 +24,43 @@
 :root[data-mode=light] .macro-panel .btn{background:#a5f4db!important;color:#102c39!important;border:1px solid #a5f4db!important}
 
 .ov-hero{display:grid;grid-template-columns:1.3fr .9fr;gap:28px;align-items:center;padding:clamp(24px,4vw,46px);border-radius:24px;background:linear-gradient(115deg,#142a50,#26366d 55%,#185e66);color:#fff;border:1px solid #718cbd55;box-shadow:0 18px 44px #0003}.ov-kicker{font-size:11px;letter-spacing:1.5px;font-weight:800;color:var(--accent);margin-bottom:12px}.ov-hero .ov-kicker{color:#a8f2dd}.ov-hero h1{font-size:clamp(32px,4vw,56px);line-height:1.09;letter-spacing:-1.5px;margin:0 0 16px;color:#fff}.ov-hero h1 span{color:#a1f5d9}.ov-hero p{color:#dce8fa;line-height:1.7;max-width:540px}.ov-hero .actions{margin-top:24px;gap:12px;flex-wrap:wrap}.ov-hero .btn{background:#a5f4db;color:#102c39;border-color:#a5f4db;font-weight:800}.ov-hero .btn.secondary{background:#ffffff18;color:#fff;border:1px solid #ffffff88}.ov-note{font-size:11px;color:#c9dce9;margin-top:22px}.ov-visual{background:#0b1e3c70;border:1px solid #ffffff33;border-radius:18px;padding:18px;box-shadow:0 10px 28px #0002}.ov-chart-head{display:flex;justify-content:space-between;font-size:11px;letter-spacing:1px;color:#d5f4ed;font-weight:700}.ov-visual .ov-note{text-align:right;margin-top:4px}.ov-heading{display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap;margin:32px 0 16px}.ov-heading h2{margin:0}.ov-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.ov-stat,.ov-feature{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:16px;text-align:left;cursor:pointer;transition:transform .2s,border-color .2s}.ov-stat:hover,.ov-feature:hover{transform:translateY(-3px);border-color:var(--accent)}.ov-stat{display:flex;flex-direction:column;gap:12px;padding:21px}.ov-stat span{font-size:11px;color:var(--sub);letter-spacing:.5px}.ov-stat strong{font-size:36px;line-height:1.1}.ov-stat em,.ov-feature em{font-size:12px;font-style:normal;color:var(--accent);font-weight:700}.ov-features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.ov-feature{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:22px;min-height:190px}.ov-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:color-mix(in srgb,var(--accent) 17%,var(--panel));color:var(--accent);font-size:26px}.ov-feature strong{font-size:17px}.ov-feature>span:not(.ov-icon){color:var(--sub);font-size:13px;line-height:1.5}.ov-feature em{margin-top:auto}.ov-disclaimer{padding:15px;border:1px solid var(--line);border-radius:12px;color:var(--sub);font-size:12px;margin-top:25px}@media(max-width:900px){.ov-hero{grid-template-columns:1fr}.ov-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.ov-features{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.ov-stats,.ov-features{grid-template-columns:1fr}.ov-hero{padding:24px}}
+
+/* Unified EquityIQ blue theme — inspired by the Overview hero */
+:root{--ei-blue-1:#142a50;--ei-blue-2:#26366d;--ei-blue-3:#185e66;--ei-mint:#a1f5d9}
+body{background:var(--bg)}
+.sidebar{background:linear-gradient(175deg,color-mix(in srgb,var(--ei-blue-1) 92%,var(--panel)),color-mix(in srgb,var(--ei-blue-2) 72%,var(--panel)));border-right:1px solid #718cbd55}
+.sidebar .brand{color:#fff}.sidebar .caption{color:#c6d9ef}.sidebar .tab{color:#d7e4fa}.sidebar .tab.active,.sidebar .tab:hover{background:#8aaaff30;color:#fff;border-left:3px solid #a1f5d9}
+.top{border-bottom:1px solid var(--line);padding-bottom:14px}
+.card,.feature,.authbox{border-color:color-mix(in srgb,#6886c4 36%,var(--line));box-shadow:0 4px 18px #091e4420}
+.card h2,.card h3{color:var(--text)}
+.btn:not(.secondary){background:#365bb7;color:#fff;border-color:#6285db}.btn.secondary{border-color:color-mix(in srgb,#6285db 55%,var(--line))}
+.btn:hover,.tab:hover{filter:brightness(1.09)}
+.field:focus{outline:2px solid #79a3ff;outline-offset:1px}
+.summary,.tip{background:color-mix(in srgb,#5275c2 14%,var(--panel));border-color:#6487ce}
+th{background:color-mix(in srgb,#34599e 14%,var(--panel));color:var(--text)}
+tr:hover td{background:color-mix(in srgb,#5275c2 7%,var(--panel))}
+.compare-periods button.active{background:#365bb7;border-color:#7b9fe7}
+.ov-stat,.ov-feature{border-color:color-mix(in srgb,#6385c9 36%,var(--line))}
+.ov-icon{background:color-mix(in srgb,#5275c2 20%,var(--panel));color:#7e9eff}
+.movement-card{background:linear-gradient(115deg,#142a50,#26366d 55%,#185e66)!important;color:#fff!important;border:1px solid #718cbd99!important;border-left:6px solid #a1f5d9!important}
+.movement-card h2,.movement-card h3{color:#a1f5d9!important}
+.movement-card p,.movement-card .muted{color:#dce8fa!important}
+.movement-card .summary{background:#122b52bb!important;color:#fff!important;border-color:#8aa5df!important;border-left:4px solid #a1f5d9!important}
+.movement-card .summary b{color:#fff!important}
+.movement-evidence{background:#1b3058!important;color:#fff!important;border-color:#5c7bba!important}
+.movement-evidence a{color:#bce8ff!important}.movement-evidence .muted{color:#dce8fa!important}
+:root[data-mode=light] .sidebar{background:linear-gradient(175deg,#142a50,#26366d)}
+:root[data-mode=light] .sidebar .tab{color:#d7e4fa}
+:root[data-mode=light] .sidebar .tab.active,:root[data-mode=light] .sidebar .tab:hover{color:#fff;background:#8aaaff30}
+:root[data-mode=light] .movement-card{background:linear-gradient(115deg,#142a50,#26366d 55%,#185e66)!important;color:#fff!important;border-color:#718cbd99!important;border-left-color:#a1f5d9!important}
+:root[data-mode=light] .movement-card h2,:root[data-mode=light] .movement-card h3{color:#a1f5d9!important}
+:root[data-mode=light] .movement-card p,:root[data-mode=light] .movement-card .muted{color:#dce8fa!important}
+:root[data-mode=light] .movement-card .summary{background:#122b52bb!important;color:#fff!important;border-color:#8aa5df!important;border-left-color:#a1f5d9!important}
+:root[data-mode=light] .movement-card .summary b{color:#fff!important}
+:root[data-mode=light] .movement-evidence{background:#1b3058!important;color:#fff!important;border-color:#5c7bba!important}
+:root[data-mode=light] .movement-evidence a{color:#bce8ff!important}
+:root[data-mode=light] .movement-evidence .muted{color:#dce8fa!important}
+@media(max-width:740px){.sidebar{border-right:0;border-bottom:1px solid #718cbd55}}
 </style></head><body>
 <div class="auth" id="auth"><div class="authbox"><div class="brand">↗ Equity<span>IQ</span></div><p>Welcome to your research workspace</p><div class="authrow"><button class="btn" id="login-tab">Sign in</button><button class="btn secondary" id="register-tab">Create account</button></div><form id="authform"><label class="fieldlabel">Username</label><input class="field" id="username" autocomplete="username" minlength="3" required><label class="fieldlabel">Password</label><input class="field" id="password" type="password" autocomplete="current-password" minlength="8" required><button class="btn" type="submit" id="authbtn">Sign in</button></form><p id="authmsg" class="error small"></p><div class="tip small">Local-only prototype accounts are stored in this browser. Do not use a real password, brokerage credentials, or confidential financial information.</div></div></div>
 <div id="application" class="app" hidden><aside class="sidebar"><div class="brand">↗ Equity<span>IQ</span></div><div class="caption">GLOBAL STOCK INTELLIGENCE</div><nav id="nav"></nav><p class="small muted">Research only · Not a brokerage</p></aside><main><div class="top"><span class="muted">Research workspace / <b id="currenttab">Overview</b></span><button class="btn secondary" id="signout">Sign out</button></div>
@@ -60,12 +97,12 @@ function applyPrefs(){let mode=storage('ei_mode','dark');document.documentElemen
 const light=root.dataset.mode==='light';
 const shade=Math.max(0,Math.min(100,Number(storage('ei_shade',50))||0));
 const dullness=Math.max(0,Math.min(100,Number(storage('ei_dullness',50))||0));
-const sat=Math.round(4+dullness*.42),base=light?Math.round(90+shade*.09):Math.round(3+shade*.13);
+const sat=Math.round(18+dullness*.38),base=light?Math.round(89+shade*.08):Math.round(4+shade*.12);
 const panel=light?Math.min(99,base+3):Math.min(29,base+6);
 const border=light?Math.max(65,base-10):Math.min(42,panel+10);
-root.style.setProperty('--bg','hsl(221 '+sat+'% '+base+'%)');
-root.style.setProperty('--panel','hsl(221 '+sat+'% '+panel+'%)');
-root.style.setProperty('--line','hsl(221 '+Math.round(sat*.6)+'% '+border+'%)');
+root.style.setProperty('--bg','hsl(220 '+sat+'% '+base+'%)');
+root.style.setProperty('--panel','hsl(220 '+sat+'% '+panel+'%)');
+root.style.setProperty('--line','hsl(220 '+Math.round(sat*.75)+'% '+border+'%)');
 root.style.setProperty('--text',light?'#19253b':'#ecf3ff');
 root.style.setProperty('--sub',light?'#475875':'#aebbd0');
 root.style.setProperty('--pos',light?'#087c58':'#40ddad');
@@ -73,7 +110,7 @@ root.style.setProperty('--neg',light?'#b52243':'#ff768c');
 root.style.setProperty('--chart-panel','var(--panel)');
 $('shade').value=shade;$('shadevalue').textContent=shade+'%';
 $('dullness').value=dullness;$('dullnessvalue').textContent=dullness+'%';
-document.documentElement.style.setProperty('--accent',storage('ei_accent','#7187ff'));document.documentElement.style.fontSize=storage('ei_fontsize','14px');document.body.classList.toggle('compact',storage('ei_compact',false));document.body.classList.toggle('blur',storage('ei_privacy',false));document.documentElement.style.scrollBehavior=storage('ei_reduce',false)?'auto':'';for(let [id,key,def] of [['mode','ei_mode','dark'],['accent','ei_accent','#7187ff'],['fontsize','ei_fontsize','14px'],['defaulttab','ei_defaulttab','overview']])$(id).value=storage(key,def);for(let [id,key] of [['compact','ei_compact'],['privacy','ei_privacy'],['reduce','ei_reduce']])$(id).checked=storage(key,false)}
+document.documentElement.style.setProperty('--accent',storage('ei_accent','#527be0'));document.documentElement.style.fontSize=storage('ei_fontsize','14px');document.body.classList.toggle('compact',storage('ei_compact',false));document.body.classList.toggle('blur',storage('ei_privacy',false));document.documentElement.style.scrollBehavior=storage('ei_reduce',false)?'auto':'';for(let [id,key,def] of [['mode','ei_mode','dark'],['accent','ei_accent','#527be0'],['fontsize','ei_fontsize','14px'],['defaulttab','ei_defaulttab','overview']])$(id).value=storage(key,def);for(let [id,key] of [['compact','ei_compact'],['privacy','ei_privacy'],['reduce','ei_reduce']])$(id).checked=storage(key,false)}
 for(const [id,key] of [['shade','ei_shade'],['dullness','ei_dullness']]){
  $(id).addEventListener('input',e=>{save(key,Number(e.target.value));applyPrefs()});
 }
